@@ -21,7 +21,116 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc8d1a10-057e-4c33-b96f-ae12ce3e744a" name="Changes" comment="" />
+    <list default="true" id="cc8d1a10-057e-4c33-b96f-ae12ce3e744a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/ProjectSettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/VSWorkspaceState.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/cmake.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/iio-oscilloscope-main/FileContentIndex/c5dc1798-4498-4843-8adb-7648452ff0bd.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/iio-oscilloscope-main/FileContentIndex/e2195c5d-c848-4c42-b011-1aef831b8ce7.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/iio-oscilloscope-main/v17/.wsuo" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/iio-oscilloscope-main/v17/Browse.VC.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/iio-oscilloscope-main/v17/DocumentLayout.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/iio-oscilloscope-main/v17/ipch/AutoPCH/7fbf7a6dac55fb5f/DIALOGS.ipch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vs/slnx.sqlite" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CppProperties.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/query/cache-v2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/query/cmakeFiles-v1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/query/codemodel-v2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/query/toolchains-v1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CPackConfig.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CPackSourceConfig.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_uninstall.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/AD5628_1.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/AD7303.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/ad6676.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/ad9081.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/ad9084.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/ad9371.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/ad9371_adv.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/ad9739a.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/adrv9002.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/adrv9009.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/adrv9009_adv.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/cf_axi_tdd.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/cn0357.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/cn0508.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/cn0511.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/cn0540.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/daq2.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/debug.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/dmm.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/fmcadc3.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/fmcomms11.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/fmcomms2.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/fmcomms2_adv.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/fmcomms5.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/fmcomms6.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/generic_dac.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/lidar.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/motor_control.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/osc.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/oscplot.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/pr_config.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/scpi.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/spectrum_analyzer.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/glade/xmw.glade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/ADIlogo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/IIOlogo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/ch_color_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/laser_symbol.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/osc.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/osc.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/osc128.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/osc16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/osc256.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/osc32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/osc64.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/osc_capture.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/osc_generator.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/sawtooth.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/sine.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/square.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/icons/triangle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/AD5628_1.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/AD5628_1.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/AD7303.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/AD7303.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/ad6676.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/ad6676.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/ad9081.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/ad9081.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/ad9084.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/ad9084.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/ad9371.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/ad9371.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/ad9371_adv.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/ad9371_adv.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/ad9739a.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/ad9739a.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/adrv9002.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/adrv9002.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/adrv9009.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/adrv9009.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/adrv9009_adv.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/adrv9009_adv.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/cf_axi_tdd.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/cf_axi_tdd.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/cn0357.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/cn0357.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/cn0508.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/cn0508.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/cn0511.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/cn0511.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/cn0540.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/cn0540.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/daq2.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/daq2.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/debug.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/debug.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/dmm.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/dmm.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/fmcadc3.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/fmcadc3.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/fmcomms11.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/fmcomms11.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/fmcomms2.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/fmcomms2.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/fmcomms2_adv.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/fmcomms2_adv.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/fmcomms5.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/fmcomms5.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/fmcomms6.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/fmcomms6.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/generic_dac.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/generic_dac.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/lidar.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/lidar.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/motor_control.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/motor_control.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/osc.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/osc.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/oscplot.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/oscplot.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/pr_config.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/pr_config.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/scpi.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/scpi.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/spectrum_analyzer.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/spectrum_analyzer.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/glade/xmw.glade" beforeDir="false" afterPath="$PROJECT_DIR$/glade/xmw.glade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/iio_widget.c" beforeDir="false" afterPath="$PROJECT_DIR$/iio_widget.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/oscplot.c" beforeDir="false" afterPath="$PROJECT_DIR$/oscplot.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/adrv9002.c" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/adrv9002.c" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,6 +139,21 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;verrgelles&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/verrgelles/iio-oscilloscope-main.git&quot;,
+    &quot;accountId&quot;: &quot;2d12ece4-0d10-49c1-9a08-fb3a8ea2504b&quot;
+  }
+}</component>
   <component name="Make.Settings">
     <option name="useCygwin" value="true" />
   </component>
@@ -44,6 +168,7 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="2ky4AMolVmAWPbFWy1GCT0xzWnh" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -57,6 +182,7 @@
     &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -104,7 +230,8 @@
       <workItem from="1724243019187" duration="72000" />
       <workItem from="1724243104388" duration="1763000" />
       <workItem from="1724246394285" duration="3398000" />
-      <workItem from="1724250044910" duration="1026000" />
+      <workItem from="1724250044910" duration="2443000" />
+      <workItem from="1724253127404" duration="5000" />
     </task>
     <servers />
   </component>

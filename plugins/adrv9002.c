@@ -221,6 +221,10 @@ struct adrv9002_common {
 	struct iio_widget w[NUM_MAX_WIDGETS];
 	uint16_t num_widgets;
 	bool enabled;
+	/*
+	 *
+	 */
+	bool enable_gpio;
 	uint8_t idx;
 };
 
@@ -499,15 +503,28 @@ static void save_orx_powerdown(GtkWidget *widget, struct adrv9002_orx *orx)
 	g_free(t_ensm);
 }
 
-static void save_ensm(GtkWidget *w, struct iio_widget *widget)
+static void save_ensm(GtkWidget *w, struct adrv9002_common *chann)
 {
-	widget->save(widget);
+	char *ensm = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(chann->ensm.widget));
+	char *port_en = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(chann->port_en.widget));
+
+	if (!strcmp(port_en, "pin") && !strcmp(ensm, "calibrated")) {
+		dialog_box_message_error(chann->ensm.widget, "Enable State Mode",
+					 "Only primed or rf_enabled possible when pin mode is enabled");
+		goto out_free;
+	}
+
+	chann->ensm.save(&chann->ensm);
 	/*
 	 * If it is a transition to rf_enabled, it can take some time and so, we
 	 * can still get the old value if we do not wait a bit...
 	 */
 	usleep(2000);
-	iio_widget_update_block_signals_by_data(widget);
+
+out_free:
+	iio_widget_update_block_signals_by_data(&chann->ensm);
+	g_free(ensm);
+	g_free(port_en);
 }
 
 static void save_port_en(GtkWidget *widget, struct adrv9002_common *chann)
@@ -516,6 +533,14 @@ static void save_port_en(GtkWidget *widget, struct adrv9002_common *chann)
 
 	iio_widget_save_block_signals_by_data(&chann->port_en);
 	port_en = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(widget));
+
+	if (chann->enable_gpio) {
+		/*
+		 *
+		 */
+		iio_widget_update_block_signals_by_data(&chann->ensm);
+		return;
+	}
 
 	if (port_en && strcmp(port_en, "spi")) {
 		gtk_widget_set_sensitive(chann->ensm.widget, false);
@@ -653,8 +678,12 @@ static void update_special_widgets(struct adrv9002_common *chann, const char *en
 	if (gain_ctl && strcmp(gain_ctl, "spi"))
 		iio_widget_update_block_signals_by_data(&chann->gain);
 
-	if (port_en && strcmp(port_en, "spi") && ensm)
-		iio_widget_update_value(&chann->ensm, ensm, len);
+	if (port_en && strcmp(port_en, "spi") && !chann->enable_gpio) {
+		if (ensm)
+			iio_widget_update_value(&chann->ensm, ensm, len);
+		else
+			iio_widget_update_block_signals_by_data(&chann->ensm);
+	}
 
 	g_free(gain_ctl);
 	g_free(port_en);
@@ -763,6 +792,51 @@ static void adrv9002_update_orx_widgets(struct plugin_private *priv, const int c
 	iio_update_widgets_block_signals_by_data(orx->w, orx->num_widgets);
 }
 
+static bool adrv9002_port_enable_gpio_controlled(const struct adrv9002_common *chan)
+{
+	char *port_en = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(chan->port_en.widget));
+	char *ensm = gtk_combo_box_text_get_active_text(GTK_COMBO_BOX_TEXT(chan->ensm.widget));
+	bool gpio = false;
+	int ret;
+
+	printf("Check chan %d, port_en:%s, ensm:%s\n", chan->idx, port_en, ensm);
+	/*
+	 *
+	 */
+	if (strcmp(port_en, "pin")) {
+		ret = iio_channel_attr_write(chan->port_en.chn, "port_en_mode", "pin");
+		if (ret < 0) {
+			printf("Could not set porto to pin (%d)\n", ret);
+			goto out;
+		}
+	}
+
+	ret = iio_channel_attr_write(chan->ensm.chn, "ensm_mode", "primed");
+	if (ret < 0 && ret != -EFAULT) {
+		printf("Could not set ensm to primed (%d)\n", ret);
+		goto out;
+	} else if (ret > 0) {
+		gpio = true;
+	}
+
+	/*
+	 * Go back to previous state and to spi mode if that was the port mode
+	 * Not much to do in case of error, hence ignore them...
+	 */
+	if (strcmp(port_en, "pin")) {
+		iio_channel_attr_write(chan->port_en.chn, "port_en_mode", "spi");
+		iio_channel_attr_write(chan->ensm.chn, "ensm_mode", ensm);
+	} else if (gpio) {
+		iio_channel_attr_write(chan->ensm.chn, "ensm_mode", ensm);
+	}
+
+out:
+	g_free(port_en);
+	g_free(ensm);
+
+	return gpio;
+}
+
 static void adrv9002_update_rx_widgets(struct plugin_private *priv, const int chann)
 {
 	struct adrv9002_rx *rx = &priv->rx_widgets[chann];
@@ -786,6 +860,10 @@ static void adrv9002_update_rx_widgets(struct plugin_private *priv, const int ch
 	update_label(&rx->decimated_power);
 	update_label(&rx->rx.rf_bandwidth);
 	update_label(&rx->rx.sampling_rate);
+
+	rx->rx.enable_gpio = adrv9002_port_enable_gpio_controlled(&rx->rx);
+	printf("RX%d por_en_mode can controlled by a gpio? (%d)\n", rx->rx.idx,
+	       rx->rx.enable_gpio);
 }
 
 static void adrv9002_update_tx_widgets(struct plugin_private *priv, const int chann)
@@ -806,6 +884,10 @@ static void adrv9002_update_tx_widgets(struct plugin_private *priv, const int ch
 	/* labels */
 	update_label(&tx->rf_bandwidth);
 	update_label(&tx->sampling_rate);
+
+	tx->enable_gpio = adrv9002_port_enable_gpio_controlled(tx);
+	printf("TX%d por_en_mode can controlled by a gpio? (%d)\n", tx->idx,
+	       tx->enable_gpio);
 }
 
 static void rx_sample_rate_update(struct plugin_private *priv)
@@ -2770,7 +2852,7 @@ static void connect_special_signal_widgets(struct plugin_private *priv, const in
 					    &priv->rx_widgets[chann].rx.nco_freq);
 	/* ensm mode and port en */
 	iio_make_widget_update_signal_based(&priv->rx_widgets[chann].rx.ensm,
-					    G_CALLBACK(save_ensm), &priv->rx_widgets[chann].rx.ensm);
+					    G_CALLBACK(save_ensm), &priv->rx_widgets[chann].rx);
 	iio_make_widget_update_signal_based(&priv->rx_widgets[chann].rx.port_en,
 					    G_CALLBACK(save_port_en), &priv->rx_widgets[chann].rx);
 	/* digital gain control */
@@ -2798,7 +2880,7 @@ static void connect_special_signal_widgets(struct plugin_private *priv, const in
 					    &priv->tx_widgets[chann].gain);
 	/* ensm mode and port en */
 	iio_make_widget_update_signal_based(&priv->tx_widgets[chann].ensm,
-					    G_CALLBACK(save_ensm), &priv->tx_widgets[chann].ensm);
+					    G_CALLBACK(save_ensm), &priv->tx_widgets[chann]);
 	iio_make_widget_update_signal_based(&priv->tx_widgets[chann].port_en,
 					    G_CALLBACK(save_port_en), &priv->tx_widgets[chann]);
 	/* carrier frequency */
