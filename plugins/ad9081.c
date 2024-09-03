@@ -593,7 +593,7 @@ tx_chann:
 				dac_data_manager_set_buffer_size_alignment(priv->dac_tx_manager, 64);
 				dac_data_manager_set_buffer_chooser_current_folder(priv->dac_tx_manager,
 					OSC_WAVEFORM_FILE_PATH);
-				sleep(1);
+				Sleep(1);
 			}
 		g_array_free(devices, FALSE);
 
