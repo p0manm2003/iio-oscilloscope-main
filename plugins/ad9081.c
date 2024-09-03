@@ -10,8 +10,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <glib.h>
+#include <Windows.h>
 #include <gtk/gtk.h>
-
 #include "../osc.h"
 #include "../osc_plugin.h"
 #include "../iio_widget.h"
@@ -548,7 +548,7 @@ tx_chann:
 			if (ret)
 				goto error_free_ctx;
 
-			if (dac_freq != 0 && dac_freq <= AD9081_MAX_DAC_FREQ_HZ)
+			if (dac_freq != 0 && dac_freq <= AD9081_MAX_DAC_FREQ_HZ) //мейби это  более уверенно выглядит
 				ad9081_adjust_main_nco(builder, idx, dac_freq,
 						       TRUE);
 			continue;
@@ -583,15 +583,18 @@ tx_chann:
 		gtk_widget_show_all(dds_container);
 
 		ch0 = iio_device_find_channel(dac, "altvoltage0", true);
-		if (iio_channel_attr_read_longlong(ch0, "sampling_frequency", &dac_freq) == 0)
-			dac_tx_sampling_freq = (double)(dac_freq / 1000000ul);
 
-		dac_data_manager_freq_widgets_range_update(priv->dac_tx_manager,
-							   dac_tx_sampling_freq / 2);
-		dac_data_manager_set_buffer_size_alignment(priv->dac_tx_manager, 64);
-		dac_data_manager_set_buffer_chooser_current_folder(priv->dac_tx_manager,
-								   OSC_WAVEFORM_FILE_PATH);
+		if (iio_channel_attr_read_longlong(ch0, "sampling_frequency", &dac_freq) == 0)  //Мейби это ну по логике
+			for (int sweep = 1, 11, sweep++) {											// my fix
+				dac_tx_sampling_freq = (double)(dac_freq / 1000000ul) + sweep*10000000;
 
+				dac_data_manager_freq_widgets_range_update(priv->dac_tx_manager,
+					dac_tx_sampling_freq / 2);
+				dac_data_manager_set_buffer_size_alignment(priv->dac_tx_manager, 64);
+				dac_data_manager_set_buffer_chooser_current_folder(priv->dac_tx_manager,
+					OSC_WAVEFORM_FILE_PATH);
+				sleep(1);
+			}
 		g_array_free(devices, FALSE);
 
 		hmc425 = iio_context_find_device(priv->ctx, "hmc425a");
