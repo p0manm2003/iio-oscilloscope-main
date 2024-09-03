@@ -548,7 +548,7 @@ tx_chann:
 			if (ret)
 				goto error_free_ctx;
 
-			if (dac_freq != 0 && dac_freq <= AD9081_MAX_DAC_FREQ_HZ) //לויבל ‎עמ 
+			if (dac_freq != 0 && dac_freq <= AD9081_MAX_DAC_FREQ_HZ) //לויבל ‎עמ  gjgh
 				ad9081_adjust_main_nco(builder, idx, dac_freq,
 						       TRUE);
 			continue;
@@ -583,7 +583,7 @@ tx_chann:
 		gtk_widget_show_all(dds_container);
 
 		ch0 = iio_device_find_channel(dac, "altvoltage0", true);
-		for (int sweep = 1, sweep < 11, sweep++) {
+		for (int sweep = 1; sweep < 11; sweep++) {
 		if (iio_channel_attr_read_longlong(ch0, "sampling_frequency", &dac_freq) == 0)  //Ìויבט ‎עמ
 			
 				dac_tx_sampling_freq = (double)(dac_freq / 1000000ul) + sweep*10000000;
