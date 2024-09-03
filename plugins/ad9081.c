@@ -11,7 +11,7 @@
 #include <string.h>
 #include <glib.h>
 #include <gtk/gtk.h>
-
+#include <Windows.h>
 #include "../osc.h"
 #include "../osc_plugin.h"
 #include "../iio_widget.h"
@@ -584,14 +584,16 @@ tx_chann:
 
 		ch0 = iio_device_find_channel(dac, "altvoltage0", true);
 		if (iio_channel_attr_read_longlong(ch0, "sampling_frequency", &dac_freq) == 0)  //Ìויבט ‎עמ
-			dac_tx_sampling_freq = (double)(dac_freq / 1000000ul);
+			for (int sweep = 1, 11, sweep++) {
+				dac_tx_sampling_freq = (double)(dac_freq / 1000000ul) + sweep*10000000;
 
-		dac_data_manager_freq_widgets_range_update(priv->dac_tx_manager,
-							   dac_tx_sampling_freq / 2);
-		dac_data_manager_set_buffer_size_alignment(priv->dac_tx_manager, 64);
-		dac_data_manager_set_buffer_chooser_current_folder(priv->dac_tx_manager,
-								   OSC_WAVEFORM_FILE_PATH);
-
+				dac_data_manager_freq_widgets_range_update(priv->dac_tx_manager,
+					dac_tx_sampling_freq / 2);
+				dac_data_manager_set_buffer_size_alignment(priv->dac_tx_manager, 64);
+				dac_data_manager_set_buffer_chooser_current_folder(priv->dac_tx_manager,
+					OSC_WAVEFORM_FILE_PATH);
+				sleep(1);
+			}
 		g_array_free(devices, FALSE);
 
 		hmc425 = iio_context_find_device(priv->ctx, "hmc425a");
