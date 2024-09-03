@@ -521,7 +521,7 @@ static GtkWidget *ad9081_init(struct osc_plugin *plugin, GtkWidget *notebook,
 			if (ret)
 				goto error_free_ctx;
 
-			if (adc_freq != 0 && adc_freq <= AD9081_MAX_ADC_FREQ_HZ)
+			if (adc_freq != 0 && adc_freq <= AD9081_MAX_ADC_FREQ_HZ)  
 				ad9081_adjust_main_nco(builder, idx, adc_freq,
 						       0);
 
@@ -592,7 +592,7 @@ tx_chann:
 		for (sweep = 1; sweep < 11; sweep++) {
 			if (iio_channel_attr_read_longlong(ch0, "sampling_frequency", &dac_freq) == 0) {  //Ìויבט ‎עמ
 
-				dac_tx_sampling_freq = (double)((dac_freq++sweep * 10000000) / 1000000ul);
+				dac_tx_sampling_freq = (double)((dac_freq+sweep * 10000000) / 1000000ul);
 			}
 			dac_data_manager_freq_widgets_range_update(priv->dac_tx_manager,
 				dac_tx_sampling_freq / 2);
