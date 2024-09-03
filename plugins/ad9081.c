@@ -548,9 +548,14 @@ tx_chann:
 			if (ret)
 				goto error_free_ctx;
 
-			if (dac_freq != 0 && dac_freq <= AD9081_MAX_DAC_FREQ_HZ) //לויבל ‎עמ  gjgh
-				ad9081_adjust_main_nco(builder, idx, dac_freq,
-						       TRUE);
+			if (dac_freq != 0 && dac_freq <= AD9081_MAX_DAC_FREQ_HZ) { //לויבל ‎עמ  gjgh
+				int sweep;
+				for (sweep = 1; sweep < 11; sweep++) {
+				ad9081_adjust_main_nco(builder, idx, dac_freq+sweep*10000000,
+					TRUE);
+				Sleep(1000);
+				}
+			}
 			continue;
 		}
 		/* hide non existing tx channel */
@@ -583,8 +588,6 @@ tx_chann:
 		gtk_widget_show_all(dds_container);
 
 		ch0 = iio_device_find_channel(dac, "altvoltage0", true);
-		int sweep;
-		for ( sweep = 1; sweep < 11; sweep++) {
 			if (iio_channel_attr_read_longlong(ch0, "sampling_frequency", &dac_freq) == 0) {  //Ìויבט ‎עמ
 
 				dac_tx_sampling_freq = (double)(dac_freq / 1000000ul) + sweep * 10000000;
@@ -594,8 +597,6 @@ tx_chann:
 				dac_data_manager_set_buffer_size_alignment(priv->dac_tx_manager, 64);
 				dac_data_manager_set_buffer_chooser_current_folder(priv->dac_tx_manager,
 					OSC_WAVEFORM_FILE_PATH);
-				Sleep(1);
-			}
 		g_array_free(devices, FALSE);
 
 		hmc425 = iio_context_find_device(priv->ctx, "hmc425a");
