@@ -590,7 +590,7 @@ tx_chann:
 		ch0 = iio_device_find_channel(dac, "altvoltage0", true);
 			if (iio_channel_attr_read_longlong(ch0, "sampling_frequency", &dac_freq) == 0) {  //Ìויבט ‎עמ
 
-				dac_tx_sampling_freq = (double)(dac_freq / 1000000ul) + sweep * 10000000;
+				dac_tx_sampling_freq = (double)(dac_freq / 1000000ul);
 			}
 				dac_data_manager_freq_widgets_range_update(priv->dac_tx_manager,
 					dac_tx_sampling_freq / 2);
