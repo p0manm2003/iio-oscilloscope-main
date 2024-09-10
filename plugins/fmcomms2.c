@@ -5,7 +5,7 @@
  *
  **/
 #include <stdio.h>
-
+#include <Windows.h>
 #include <gtk/gtk.h>
 #include <gtkdatabox.h>
 #include <glib.h>
@@ -373,7 +373,7 @@ static void tx_sample_frequency_changed_cb(void *data)
 	rate = get_gui_tx_sampling_freq();
 
 	if (auto_fir) {
-		ad9361_set_bb_rate (dev, (unsigned long) (rate * 1000000));
+		ad9361_set_bb_rate (dev, (unsigned long) (rate * 1000000));  //частота
 		gtk_widget_show(enable_fir_filter_rx_tx);
 		gtk_widget_show(disable_all_fir_filters);
 		filter_fir_update();
@@ -957,7 +957,7 @@ static int xo_freq_to_eeprom(void)
 
 static int dcxo_cal_clicked(GtkButton *btn, gpointer data)
 {
-	double current_freq, target_freq = 0, diff = 0, orig_diff = 0, prev_diff = 0;
+	double current_freq, target_freq = 0, diff = 0, orig_diff = 0, prev_diff = 0;    //частота    //чек
 	int coarse = 0, fine = 4095, tune_step = 1, direction = 0, ret = 0;
 	GQueue *tuning_elems = NULL;
 	struct tuning_param *tuning_elem = NULL;
@@ -1022,100 +1022,107 @@ static int dcxo_cal_clicked(GtkButton *btn, gpointer data)
 
 	tuning_elems = g_queue_new();
 	target_freq = roundf(target_freq);
+	int sweep;
+	for (sweep = 0; sweep < 11; sweep++) {
+		target_freq += 0 * 10000000;
+		while (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(btn))) {
+			gtk_widget_show(dcxo_cal_progressbar);
+			gtk_spin_button_set_value(GTK_SPIN_BUTTON(glb_widgets[dcxo_coarse_num].widget), coarse);
+			gtk_spin_button_set_value(GTK_SPIN_BUTTON(glb_widgets[dcxo_fine_num].widget), fine);
+			dcxo_widgets_update();
+			while (gtk_events_pending())
+				gtk_main_iteration();
 
-	while (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(btn))) {
-		gtk_widget_show(dcxo_cal_progressbar);
-		gtk_spin_button_set_value(GTK_SPIN_BUTTON(glb_widgets[dcxo_coarse_num].widget), coarse);
-		gtk_spin_button_set_value(GTK_SPIN_BUTTON(glb_widgets[dcxo_fine_num].widget), fine);
-		dcxo_widgets_update();
-		while (gtk_events_pending())
-			gtk_main_iteration();
+			/* Querying frequency counters via SCPI too quickly leads to failures. */
+			sleep(1);
 
-		/* Querying frequency counters via SCPI too quickly leads to failures. */
-		sleep(1);
-
-		if (scpi_counter_get_freq(&current_freq, &target_freq) != 0) {
-			failure_msg = "Error retrieving counter frequency. "
-				"Make sure the counter has the correct input attached.";
-			goto dcxo_cleanup;
-		}
-
-		/* Sometimes the frequency counter returns entirely wrong values that
-		 * are orders of magnitude off. In those cases we trigger a new
-		 * measurement request and hope the device returns the correct value
-		 * this time.
-		 */
-		if (prev_diff != 0 && fabs(target_freq - current_freq) > 10 * fabs(prev_diff)) {
-			fprintf(stderr, "Skipping likely erroneous response from SCPI device. "
-				"Previous difference to target frequency was %lf Hz, possible bad value's "
-				"difference is %lf Hz.\n", prev_diff, (target_freq - current_freq));
-			continue;
-		}
-
-		prev_diff = diff;
-		diff = target_freq - current_freq;
-
-		/* Show progress towards the target frequency in relation to the
-		 * original frequency measurement.
-		 */
-		if (orig_diff == 0) {
-			orig_diff = fabs(diff);
-			direction = (int)fabs(diff)/diff;
-		} else {
-			gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(
-				dcxo_cal_progressbar), (orig_diff-fabs(diff))/orig_diff);
-		}
-
-		/* Store the past ten tuning value pairs and related frequencies. This
-		 * is used to determine the final values that are the closest to the
-		 * target frequency.
-		 */
-		if (g_queue_get_length(tuning_elems) >= 10)
-			g_queue_pop_head(tuning_elems);
-		tuning_elem = g_new(struct tuning_param, 1);
-		tuning_elem->frequency = current_freq;
-		tuning_elem->coarse = coarse;
-		tuning_elem->fine = fine;
-		g_queue_push_tail(tuning_elems, tuning_elem);
-
-		if (fine_tune) {
-			/* Stop once we go past our target frequency. */
-			if (diff != 0) {
-				if (direction < 0 && current_freq < target_freq)
-					break;
-				else if (direction > 0 && current_freq > target_freq)
-					break;
+			if (scpi_counter_get_freq(&current_freq, &target_freq) != 0) {
+				failure_msg = "Error retrieving counter frequency. "
+					"Make sure the counter has the correct input attached.";
+				goto dcxo_cleanup;
 			}
 
-			tune_step = (int)roundf(-1 * (diff / 2));
-
-			/* Force the next tuning step to be at least positive or negative 1. */
-			if (tune_step == 0)
-				tune_step = -1 * direction;
-
-			fine += tune_step;
-		} else {
-			/* Do a binary search for the closest approaching coarse tune value
-			 * in relation to the target frequency. When the difference to the
-			 * target frequency is below another coarse tune step, switch to
-			 * fine tuning.
+			/* Sometimes the frequency counter returns entirely wrong values that
+			 * are orders of magnitude off. In those cases we trigger a new
+			 * measurement request and hope the device returns the correct value
+			 * this time.
 			 */
-			if (tune_step != 0) {
-				if (prev_diff != 0)
-					tune_step = (int)nearbyintf(-1 * ((tune_step * diff) / fabs(diff - prev_diff)) / 2);
-				coarse += tune_step;
-			} else {
-				fine_tune = true;
+			if (prev_diff != 0 && fabs(target_freq - current_freq) > 10 * fabs(prev_diff)) {
+				fprintf(stderr, "Skipping likely erroneous response from SCPI device. "
+					"Previous difference to target frequency was %lf Hz, possible bad value's "
+					"difference is %lf Hz.\n", prev_diff, (target_freq - current_freq));
+				continue;
+			}
+
+			prev_diff = diff;
+			diff = target_freq - current_freq;
+
+			/* Show progress towards the target frequency in relation to the
+			 * original frequency measurement.
+			 */
+			if (orig_diff == 0) {
+				orig_diff = fabs(diff);
+				direction = (int)fabs(diff) / diff;
+			}
+			else {
+				gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(
+					dcxo_cal_progressbar), (orig_diff - fabs(diff)) / orig_diff);
+			}
+
+			/* Store the past ten tuning value pairs and related frequencies. This
+			 * is used to determine the final values that are the closest to the
+			 * target frequency.
+			 */
+			if (g_queue_get_length(tuning_elems) >= 10)
+				g_queue_pop_head(tuning_elems);
+			tuning_elem = g_new(struct tuning_param, 1);
+			tuning_elem->frequency = current_freq;
+			tuning_elem->coarse = coarse;
+			tuning_elem->fine = fine;
+			g_queue_push_tail(tuning_elems, tuning_elem);
+
+			if (fine_tune) {
+				/* Stop once we go past our target frequency. */
+				if (diff != 0) {
+					if (direction < 0 && current_freq < target_freq)
+						break;
+					else if (direction > 0 && current_freq > target_freq)
+						break;
+				}
+
+				tune_step = (int)roundf(-1 * (diff / 2));
+
+				/* Force the next tuning step to be at least positive or negative 1. */
+				if (tune_step == 0)
+					tune_step = -1 * direction;
+
+				fine += tune_step;
+			}
+			else {
+				/* Do a binary search for the closest approaching coarse tune value
+				 * in relation to the target frequency. When the difference to the
+				 * target frequency is below another coarse tune step, switch to
+				 * fine tuning.
+				 */
+				if (tune_step != 0) {
+					if (prev_diff != 0)
+						tune_step = (int)nearbyintf(-1 * ((tune_step * diff) / fabs(diff - prev_diff)) / 2);
+					coarse += tune_step;
+				}
+				else {
+					fine_tune = true;
+				}
+			}
+
+			if (coarse < 0 || coarse > 63 || fine < 0 || fine > 8191) {
+				failure_msg = "Outside of tuning bounds. Make sure you have the "
+					"correct calibration method selected.\n";
+				goto dcxo_cleanup;
 			}
 		}
-
-		if (coarse < 0 || coarse > 63 || fine < 0 || fine > 8191) {
-			failure_msg = "Outside of tuning bounds. Make sure you have the "
-				"correct calibration method selected.\n";
-			goto dcxo_cleanup;
-		}
+		Sleep(2);
 	}
-
+	//конец while
 	/* Determine the median tuning value from the list of acceptable values.
 	 * Values are first removed from the beginning of the queue if they have a
 	 * higher difference to the target frequency in comparison to the last
