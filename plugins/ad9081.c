@@ -459,11 +459,8 @@ static GtkWidget* ad9081_init(struct osc_plugin* plugin, GtkWidget* notebook,
 		ch0 = iio_device_find_channel(ad9081_dev, "voltage0", FALSE);
 
 	if (ch0 && iio_channel_attr_read_longlong(ch0, "adc_frequency", &adc_freq) == 0) {   //частота
-		int sweep;
-		for (sweep = 1; sweep < 11; sweep++) {
 			snprintf(attr_val, sizeof(attr_val), "%.2f",
-				(double)((adc_freq+sweep*1000000) / 1000000ul);
-		}
+				(double)(adc_freq / 1000000ul));
 	}
 	else
 		snprintf(attr_val, sizeof(attr_val), "%s", "N/A");
@@ -492,18 +489,19 @@ static GtkWidget* ad9081_init(struct osc_plugin* plugin, GtkWidget* notebook,
 	ch0 = iio_device_find_channel(ad9081_dev, "voltage0_i", TRUE);
 	if (!ch0)
 		ch0 = iio_device_find_channel(ad9081_dev, "voltage0", TRUE);
+	int sweep;
+	for (sweep = 1; sweep < 11; sweep++) {
+		if (ch0 && iio_channel_attr_read_longlong(ch0, "dac_frequency", &dac_freq) == 0)
+			snprintf(attr_val, sizeof(attr_val), "%.2f",
+				(double)((dac_freq+sweep*1000000) / 1000000ul));
+		else
+			snprintf(attr_val, sizeof(attr_val), "%s", "N/A");
 
-	if (ch0 && iio_channel_attr_read_longlong(ch0, "dac_frequency", &dac_freq) == 0)
-		snprintf(attr_val, sizeof(attr_val), "%.2f",
-			(double)(dac_freq / 1000000ul));
-	else
-		snprintf(attr_val, sizeof(attr_val), "%s", "N/A");
-
-	dac_buff = gtk_text_buffer_new(NULL);
-	gtk_text_buffer_set_text(dac_buff, attr_val, -1);
-	gtk_text_view_set_buffer(GTK_TEXT_VIEW(gtk_builder_get_object(builder, "text_view_dac_freq")),
-		dac_buff);
-
+		dac_buff = gtk_text_buffer_new(NULL);
+		gtk_text_buffer_set_text(dac_buff, attr_val, -1);
+		gtk_text_view_set_buffer(GTK_TEXT_VIEW(gtk_builder_get_object(builder, "text_view_dac_freq")),
+			dac_buff);
+	}
 	/* setup RX and TX channels */
 	for (idx = 0; idx < NUM_MAX_CHANNEL; idx++) {
 		GtkWidget* channel;
