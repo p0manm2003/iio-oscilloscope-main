@@ -210,7 +210,7 @@ static int ad9081_add_chan_widgets(GtkBuilder* builder,
 		ad9081, voltage,
 		"channel_nco_frequency",
 		builder, nco, &mhz_scale);
-
+	
 	iio_spin_button_int_init_from_builder(&iio_widgets[priv->num_widgets++],
 		ad9081, voltage,
 		"main_nco_frequency",
@@ -458,9 +458,13 @@ static GtkWidget* ad9081_init(struct osc_plugin* plugin, GtkWidget* notebook,
 	if (!ch0)
 		ch0 = iio_device_find_channel(ad9081_dev, "voltage0", FALSE);
 
-	if (ch0 && iio_channel_attr_read_longlong(ch0, "adc_frequency", &adc_freq) == 0)
-		snprintf(attr_val, sizeof(attr_val), "%.2f",
-			(double)(adc_freq / 1000000ul));
+	if (ch0 && iio_channel_attr_read_longlong(ch0, "adc_frequency", &adc_freq) == 0) {   //частота
+		int sweep;
+		for (sweep = 1; sweep < 11; sweep++) {
+			snprintf(attr_val, sizeof(attr_val), "%.2f",
+				(double)((adc_freq+sweep*1000000 / 1000000ul));
+		}
+	}
 	else
 		snprintf(attr_val, sizeof(attr_val), "%s", "N/A");
 
@@ -552,7 +556,7 @@ static GtkWidget* ad9081_init(struct osc_plugin* plugin, GtkWidget* notebook,
 			if (dac_freq != 0 && dac_freq <= AD9081_MAX_DAC_FREQ_HZ) {
 				int sweep;
 				for (sweep = 1; sweep < 11; sweep++) {
-					ad9081_adjust_main_nco(builder, idx, dac_freq + sweep * 10,
+					ad9081_adjust_main_nco(builder, idx, dac_freq + sweep * 1000000,
 						TRUE);
 					Sleep(1000);
 				}
@@ -593,7 +597,7 @@ static GtkWidget* ad9081_init(struct osc_plugin* plugin, GtkWidget* notebook,
 		for (sweep = 1; sweep < 11; sweep++) {
 			if (iio_channel_attr_read_longlong(ch0, "sampling_frequency", &dac_freq) == 0) {  //Ìåéáè ýòî
 
-				dac_tx_sampling_freq = (double)((dac_freq + sweep * 10) / 1000000ul);
+				dac_tx_sampling_freq = (double)((dac_freq + sweep * 1000000) / 1000000ul);
 			}
 			dac_data_manager_freq_widgets_range_update(priv->dac_tx_manager,
 				dac_tx_sampling_freq / 2);
