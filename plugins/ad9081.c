@@ -549,12 +549,13 @@ static GtkWidget* ad9081_init(struct osc_plugin* plugin, GtkWidget* notebook,
 			if (ret)
 				goto error_free_ctx;
 
-			if (dac_freq != 0 && dac_freq <= AD9081_MAX_DAC_FREQ_HZ)
+			if (dac_freq != 0 && dac_freq <= AD9081_MAX_DAC_FREQ_HZ) {
 				int sweep;
-			for (sweep = 1; sweep < 11; sweep++) {
-				ad9081_adjust_main_nco(builder, idx, dac_freq + sweep * 10,
-					TRUE);
-				Sleep(1000);
+				for (sweep = 1; sweep < 11; sweep++) {
+					ad9081_adjust_main_nco(builder, idx, dac_freq + sweep * 10,
+						TRUE);
+					Sleep(1000);
+				}
 			}
 			continue;
 		}
