@@ -34,23 +34,23 @@
 const gdouble mhz_scale = 1000000.0;
 const gdouble k_scale = 1000.0;
 
-#define dialog_box_message(widget, title, msg) { 					\
-	GtkWidget *toplevel = gtk_widget_get_toplevel(widget);				\
-											\
-	if (gtk_widget_is_toplevel(toplevel)) {						\
-		GtkWidget *dialog;							\
-											\
-		dialog = gtk_message_dialog_new(GTK_WINDOW(toplevel),			\
-					GTK_DIALOG_DESTROY_WITH_PARENT,			\
-					GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,		\
-					msg);						\
-											\
-		gtk_window_set_title(GTK_WINDOW(dialog), title);			\
-		gtk_dialog_run(GTK_DIALOG(dialog));					\
-		gtk_widget_destroy (dialog);						\
-	} else {									\
-		printf("Cannot display dialog: Toplevel wigdet not found\n");		\
-	}										\
+#define dialog_box_message(widget, title, msg) { 				
+	GtkWidget *toplevel = gtk_widget_get_toplevel(widget);				
+											
+	if (gtk_widget_is_toplevel(toplevel)) {						
+		GtkWidget *dialog;							
+											
+		dialog = gtk_message_dialog_new(GTK_WINDOW(toplevel),			
+					GTK_DIALOG_DESTROY_WITH_PARENT,			
+					GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,		
+					msg);						
+											
+		gtk_window_set_title(GTK_WINDOW(dialog), title);			
+		gtk_dialog_run(GTK_DIALOG(dialog));					
+		gtk_widget_destroy (dialog);						
+	} else {									
+		printf("Cannot display dialog: Toplevel wigdet not found\n");		
+	}										
 }
 
 struct plugin_private {
@@ -127,7 +127,7 @@ static void make_widget_update_signal_based(struct iio_widget *widgets,
 	}
 }
 
-static int ad9081_add_chan_widgets(GtkBuilder *builder,
+static int ad9081_add_chan_widgets(GtkBuilder *builder,					//Создание интерфейса канала со всеми виджетами
 				   struct plugin_private *priv,
 				   struct iio_device *ad9081,
 				   struct iio_channel *voltage,
@@ -194,7 +194,7 @@ static int ad9081_add_chan_widgets(GtkBuilder *builder,
 		  "tx_main_nco_phase8", "tx_enable8", "tx_nco_gain_scale8",
 		  "tx_test_tone_en8", "tx_test_tone_scale8", "tx_main_test_tone_en8",
 		  "tx_main_test_tone_scale8"},
-	};
+	};																				//заполняет NUM_MAX_CHUNNEL структур текстом
 	const char *nco = output ? tx_widgets[chann_nr].nco :
 					rx_widgets[chann_nr].nco;
 	const char *main_nco = output ? tx_widgets[chann_nr].main_nco :
@@ -241,7 +241,7 @@ static int ad9081_add_chan_widgets(GtkBuilder *builder,
 					  NULL);
 
 
-	iio_toggle_button_init_from_builder(&iio_widgets[priv->num_widgets++],
+	iio_toggle_buttonr_init_from_builder(&iio_widgets[priv->num_widgets++],
 					    ad9081, voltage,
 					    "channel_nco_test_tone_en", builder,
 					    tx_widgets[chann_nr].test_tone_en,
@@ -551,7 +551,7 @@ tx_chann:
 			if (dac_freq != 0 && dac_freq <= AD9081_MAX_DAC_FREQ_HZ) { //мейбм это  gjgh
 				int sweep;
 				for (sweep = 1; sweep < 11; sweep++) {
-				ad9081_adjust_main_nco(builder, idx, dac_freq+sweep*10000000,
+				ad9081_adjust_main_nco(builder, idx, dac_freq+sweep*10,
 					TRUE);
 				Sleep(1000);
 				}
@@ -592,7 +592,7 @@ tx_chann:
 		for (sweep = 1; sweep < 11; sweep++) {
 			if (iio_channel_attr_read_longlong(ch0, "sampling_frequency", &dac_freq) == 0) {  //Мейби это
 
-				dac_tx_sampling_freq = (double)((dac_freq+sweep * 10000000) / 1000000ul);
+				dac_tx_sampling_freq = (double)((dac_freq+sweep * 10) / 1000000ul);
 			}
 			dac_data_manager_freq_widgets_range_update(priv->dac_tx_manager,
 				dac_tx_sampling_freq / 2);
