@@ -462,7 +462,7 @@ static GtkWidget* ad9081_init(struct osc_plugin* plugin, GtkWidget* notebook,
 		int sweep;
 		for (sweep = 1; sweep < 11; sweep++) {
 			snprintf(attr_val, sizeof(attr_val), "%.2f",
-				(double)((adc_freq+sweep*1000000 / 1000000ul));
+				(double)((adc_freq+sweep*1000000) / 1000000ul);
 		}
 	}
 	else
