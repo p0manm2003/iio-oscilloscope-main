@@ -12,7 +12,8 @@
 #include <errno.h>
 #include <string.h>
 #include <math.h>
-
+#include <Windows.h>
+#include <stdio.h>
 #include "iio_widget.h"
 
 struct update_widgets_params {
@@ -148,6 +149,10 @@ static void spin_button_save(struct iio_widget *widget, bool is_double)
 	gdouble scale = widget->priv ? *(gdouble *)widget->priv : 1.0;
 
 	freq = gtk_spin_button_get_value(GTK_SPIN_BUTTON (widget->widget));
+	int i = 0;
+	for (i=1;i<=10;i++){
+																							//чек
+		freq = freq + i * 10;
 	min = gtk_adjustment_get_lower(gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget->widget)));
 	if (scale < 0 && min < 0)
 		freq = fabs(freq * scale);
@@ -164,13 +169,16 @@ static void spin_button_save(struct iio_widget *widget, bool is_double)
 		else
 			iio_channel_attr_write_longlong(widget->chn,
 					widget->attr_name, (long long) freq);
-	} else {
+	}
+	else {
 		if (is_double)
 			iio_device_attr_write_double(widget->dev,
-					widget->attr_name, freq);
+				widget->attr_name, freq);
 		else
 			iio_device_attr_write_longlong(widget->dev,
-					widget->attr_name, (long long) freq);
+				widget->attr_name, (long long)freq);
+	}
+	Sleep(1000);
 	}
 }
 
@@ -179,7 +187,7 @@ static void iio_spin_button_savedbl(struct iio_widget *widget)
 	return spin_button_save(widget, true);
 }
 
-void iio_spin_button_save(struct iio_widget *widget)
+void iio_spin_button_save(struct iio_widget *widget) //сохраняет значение из кнопки
 {
 	return spin_button_save(widget, false);
 }
@@ -193,7 +201,7 @@ void iio_spin_button_init(struct iio_widget *widget, struct iio_device *dev,
 		iio_spin_button_update_value, iio_spin_button_savedbl);
 }
 
-void iio_spin_button_int_init(struct iio_widget *widget, struct iio_device *dev,
+void iio_spin_button_int_init(struct iio_widget *widget, struct iio_device *dev,	//создание кнопки и прочего её
 	struct iio_channel *chn, const char *attr_name,
 	GtkWidget *spin_button, const gdouble *scale)
 {
