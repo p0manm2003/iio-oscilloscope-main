@@ -150,10 +150,12 @@ static void spin_button_save(struct iio_widget *widget, bool is_double)
 
 	freq = gtk_spin_button_get_value(GTK_SPIN_BUTTON (widget->widget));
 	int i = 0;
-	for (i=1;i<=10;i++){
-																							//чек
-		freq = freq + i * 10;
+	int buf = freq;
 	min = gtk_adjustment_get_lower(gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget->widget)));
+	for (i=1;i<=10;i++){
+		freq = buf;																					//чек
+		freq = freq + i * 10;
+	
 	if (scale < 0 && min < 0)
 		freq = fabs(freq * scale);
 	else
