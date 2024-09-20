@@ -149,38 +149,44 @@ static void spin_button_save(struct iio_widget *widget, bool is_double)
 	gdouble scale = widget->priv ? *(gdouble *)widget->priv : 1.0;
 
 	freq = gtk_spin_button_get_value(GTK_SPIN_BUTTON (widget->widget));
-	int i = 0;
 	int buf = freq;
 	min = gtk_adjustment_get_lower(gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget->widget)));
-	for (i=1;i<=10;i++){
-		freq = buf;																					//чек
-		freq = freq + i * 10;
-	
-	if (scale < 0 && min < 0)
-		freq = fabs(freq * scale);
-	else
-		freq *= scale;
+	while (1) {
+		if (buf > 6000) {
+			buf = 0;
+			}
+			buf += 100;
+			if (buf > 6000) {
+				buf = 6000;
+			}
+			freq = buf;
 
-	if (widget->priv_convert_function)
-		freq = ((double (*)(double, bool))widget->priv_convert_function)(freq, false);
+			if (scale < 0 && min < 0)
+				freq = fabs(freq * scale);
+			else
+				freq *= scale;
 
-	if (widget->chn) {
-		if (is_double)
-			iio_channel_attr_write_double(widget->chn,
-					widget->attr_name, freq);
-		else
-			iio_channel_attr_write_longlong(widget->chn,
-					widget->attr_name, (long long) freq);
-	}
-	else {
-		if (is_double)
-			iio_device_attr_write_double(widget->dev,
-				widget->attr_name, freq);
-		else
-			iio_device_attr_write_longlong(widget->dev,
-				widget->attr_name, (long long)freq);
-	}
-	Sleep(1000);
+			if (widget->priv_convert_function)
+				freq = ((double (*)(double, bool))widget->priv_convert_function)(freq, false);
+
+			if (widget->chn) {
+				if (is_double)
+					iio_channel_attr_write_double(widget->chn,
+						widget->attr_name, freq);
+				else
+					iio_channel_attr_write_longlong(widget->chn,
+						widget->attr_name, (long long)freq);
+			}
+			else {
+				if (is_double)
+					iio_device_attr_write_double(widget->dev,
+						widget->attr_name, freq);
+				else
+					iio_device_attr_write_longlong(widget->dev,
+						widget->attr_name, (long long)freq);
+			}
+			Sleep(1000);
+		
 	}
 }
 
