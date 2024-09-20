@@ -185,7 +185,7 @@ static void spin_button_save(struct iio_widget *widget, bool is_double)
 					iio_device_attr_write_longlong(widget->dev,
 						widget->attr_name, (long long)freq);
 			}
-			Sleep(1000);
+			Sleep(100);
 		
 	}
 }
