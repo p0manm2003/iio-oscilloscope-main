@@ -154,7 +154,7 @@ static void spin_button_save(struct iio_widget *widget, bool is_double)
 		int buf = 100;
 		while (1) {
 		
-			if (buf > 5500) {
+			if (buf >= 5500) {
 				buf = 0;
 			}
 			buf = buf + 100;
