@@ -151,15 +151,15 @@ static void spin_button_save(struct iio_widget *widget, bool is_double)
 	freq = gtk_spin_button_get_value(GTK_SPIN_BUTTON (widget->widget));
 	min = gtk_adjustment_get_lower(gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget->widget)));
 	if (strcmp(widget->attr_name, "main_nco_frequency")==0) {
-		int buf = freq;
+		int buf = 100;
 		while (1) {
 		
-			if (buf > 6000) {
+			if (buf > 5500) {
 				buf = 0;
 			}
 			buf = buf + 100;
-			if (buf > 6000) {
-				buf = 6000;
+			if (buf > 5500) {
+				buf = 5500;
 			}
 			freq = buf;
 			if (scale < 0 && min < 0)
