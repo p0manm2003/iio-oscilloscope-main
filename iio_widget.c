@@ -15,6 +15,7 @@
 #include <Windows.h>
 #include <stdio.h>
 #include "iio_widget.h"
+int flag = 0;
 struct update_widgets_params {
 	struct iio_widget *widgets;
 	unsigned int nb;
@@ -143,7 +144,11 @@ static void iio_spin_button_update(struct iio_widget *widget)
 }
 
 static void spin_button_save(struct iio_widget *widget, bool is_double)
-{
+{	
+	if (flag) {
+		flag = 0;
+		return;
+	}
 	gdouble freq, min;
 	gdouble scale = widget->priv ? *(gdouble *)widget->priv : 1.0;
 
@@ -231,6 +236,7 @@ static void spin_button_save(struct iio_widget *widget, bool is_double)
 			buf = 0;
 			freq = 0;
 			Sleep(10000);
+			flag = 1;
 			return;
 		}
 	}
