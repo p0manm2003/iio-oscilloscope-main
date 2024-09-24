@@ -193,7 +193,7 @@ static void spin_button_save(struct iio_widget *widget, bool is_double)
 		// IF 0
 		else {
 			int i;
-			for (i = 0; i <= 5; i++) {
+			for (i = 0; i <= 330; i++) {
 				if (buf >= 5500) {
 					buf = 0;
 				}
@@ -229,6 +229,8 @@ static void spin_button_save(struct iio_widget *widget, bool is_double)
 				Sleep(100);
 
 			}
+			buf = 0;
+			freq = 0;
 		}
 	}
 	else{
