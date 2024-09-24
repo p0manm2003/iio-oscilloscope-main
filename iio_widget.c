@@ -152,41 +152,83 @@ static void spin_button_save(struct iio_widget *widget, bool is_double)
 	min = gtk_adjustment_get_lower(gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget->widget)));
 	if (strcmp(widget->attr_name, "main_nco_frequency")==0) {
 		int buf = 100;
-		while (1) {
-		
-			if (buf >= 5500) {
-				buf = 0;
-			}
-			buf = buf + 100;
-			if (buf > 5500) {
-				buf = 5500;
-			}
-			freq = buf;
-			if (scale < 0 && min < 0)
-				freq = fabs(freq * scale);
-			else
-				freq *= scale;
+		if (freq != 0) {
+			while (1) {
 
-			if (widget->priv_convert_function)
-				freq = ((double (*)(double, bool))widget->priv_convert_function)(freq, false);
+				if (buf >= 5500) {
+					buf = 0;
+				}
+				buf = buf + 100;
+				if (buf > 5500) {
+					buf = 5500;
+				}
+				freq = buf;
+				if (scale < 0 && min < 0)
+					freq = fabs(freq * scale);
+				else
+					freq *= scale;
 
-			if (widget->chn) {
-				if (is_double)
-					iio_channel_attr_write_double(widget->chn,
-						widget->attr_name, freq);
-				else
-					iio_channel_attr_write_longlong(widget->chn,
-						widget->attr_name, (long long)freq);
+				if (widget->priv_convert_function)
+					freq = ((double (*)(double, bool))widget->priv_convert_function)(freq, false);
+
+				if (widget->chn) {
+					if (is_double)
+						iio_channel_attr_write_double(widget->chn,
+							widget->attr_name, freq);
+					else
+						iio_channel_attr_write_longlong(widget->chn,
+							widget->attr_name, (long long)freq);
+				}
+				else {
+					if (is_double)
+						iio_device_attr_write_double(widget->dev,
+							widget->attr_name, freq);
+					else
+						iio_device_attr_write_longlong(widget->dev,
+							widget->attr_name, (long long)freq);
+				}
+				Sleep(100);
 			}
-			else {
-				if (is_double)
-					iio_device_attr_write_double(widget->dev,
-						widget->attr_name, freq);
+		}
+		// IF 0
+		else {
+			int i;
+			for (i = 0; i <= 5; i++) {
+				if (buf >= 5500) {
+					buf = 0;
+				}
+				buf = buf + 100;
+				if (buf > 5500) {
+					buf = 5500;
+				}
+				freq = buf;
+				if (scale < 0 && min < 0)
+					freq = fabs(freq * scale);
 				else
-					iio_device_attr_write_longlong(widget->dev,
-						widget->attr_name, (long long)freq);
+					freq *= scale;
+
+				if (widget->priv_convert_function)
+					freq = ((double (*)(double, bool))widget->priv_convert_function)(freq, false);
+
+				if (widget->chn) {
+					if (is_double)
+						iio_channel_attr_write_double(widget->chn,
+							widget->attr_name, freq);
+					else
+						iio_channel_attr_write_longlong(widget->chn,
+							widget->attr_name, (long long)freq);
+				}
+				else {
+					if (is_double)
+						iio_device_attr_write_double(widget->dev,
+							widget->attr_name, freq);
+					else
+						iio_device_attr_write_longlong(widget->dev,
+							widget->attr_name, (long long)freq);
+				}
+				Sleep(100);
+
 			}
-			Sleep(100);
 		}
 	}
 	else{
