@@ -15,7 +15,6 @@
 #include <Windows.h>
 #include <stdio.h>
 #include "iio_widget.h"
-
 struct update_widgets_params {
 	struct iio_widget *widgets;
 	unsigned int nb;
@@ -231,6 +230,7 @@ static void spin_button_save(struct iio_widget *widget, bool is_double)
 			}
 			buf = 0;
 			freq = 0;
+			Sleep(10000);
 			return;
 		}
 	}
