@@ -235,7 +235,6 @@ static void spin_button_save(struct iio_widget *widget, bool is_double)
 			}
 			buf = 0;
 			freq = 0;
-			Sleep(10000);
 			flag = 1;
 			return;
 		}
